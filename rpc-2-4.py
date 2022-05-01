@@ -27,10 +27,6 @@ def make_recommendation(course_df, k, x):
 if __name__ == '__main__':
     course_df = pd.read_csv('ratings.csv')
     #Fill in the empty value with 0
-    course_df = course_df.fillna(0)
-    x = pd.Series(input)
-    results = make_recommendation(course_df,k,x)
-    print(course_df.iloc[results[0],1:])
-    prediction = course_df.iloc[results[0],1:].sum()/k
-    print(prediction)
+    course_df.describe()
+
 
