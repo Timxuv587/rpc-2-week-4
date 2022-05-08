@@ -73,11 +73,12 @@ if __name__ == '__main__':
     main_recommendation = main_prediction[~main_prediction.index.isin(x.index)].sort_values(ascending=False)
     # prediction.
 
-    i = 0
+
     len_courses = 4
     distros = [0,0,"II", "III"]
     #print(prediction.index[5])
     for j in range(len_courses):
+        i = 0
         if distros[j] == 0:
             predictions = main_recommendation
         else:
@@ -87,7 +88,6 @@ if __name__ == '__main__':
         while(compare_schedule(course_info, recommendations, predictions.index[i]) == 0 or predictions.index[i] in recommendations):
             i += 1
         recommendations.append(predictions.index[i])
-        i = 0
         print(recommendations)
     print(recommendations)
 
