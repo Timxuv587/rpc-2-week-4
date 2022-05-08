@@ -14,8 +14,8 @@ from sklearn.neighbors import NearestNeighbors
 if __name__ == '__main__':
     course_info = pd.read_csv('Northwestern_course_information.csv')
     size = np.array((20,50,100,200))
-    time_interval = np.array((("MoWeFr","8:00", "8:50"),
-                              ("MoWeFr","9:00","9:50"),
+    time_interval = np.array((("MoWeFr","08:00", "08:50"),
+                              ("MoWeFr","09:00","09:50"),
                               ("MoWeFr","10:00","10:50"),
                               ("MoWeFr","11:00","11:50"),
                               ("MoWeFr","12:00","12:50"),
@@ -23,8 +23,8 @@ if __name__ == '__main__':
                               ("MoWeFr","14:00","14:50"),
                               ("MoWeFr","15:00","15:50"),
                               ("MoWeFr","16:00","16:50"),
-                              ("TuTh", "8:00", "9:20"),
-                              ("TuTh", "9:00", "10:20"),
+                              ("TuTh", "08:00", "09:20"),
+                              ("TuTh", "09:00", "10:20"),
                               ("TuTh", "10:00", "11:20"),
                               ("TuTh", "11:00", "12:20"),
                               ("TuTh", "12:00", "13:20"),
@@ -32,8 +32,8 @@ if __name__ == '__main__':
                               ("TuTh", "14:00", "15:20"),
                               ("TuTh", "15:00", "14:20"),
                               ("TuTh", "16:00", "17:20"),
-                              ("MoWe", "8:00", "9:20"),
-                              ("MoWe", "9:00", "10:20"),
+                              ("MoWe", "08:00", "09:20"),
+                              ("MoWe", "09:00", "10:20"),
                               ("MoWe", "10:00", "11:20"),
                               ("MoWe", "11:00", "12:20"),
                               ("MoWe", "12:00", "13:20"),

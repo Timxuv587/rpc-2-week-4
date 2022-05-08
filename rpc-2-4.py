@@ -1,5 +1,6 @@
 # This is a sample Python script.
 import pandas as pd
+import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 # Press ⇧F10 to execute it or replace it with your code.
@@ -17,13 +18,17 @@ k = 5
 
 #class 1 class are name of class
 def compare_time(course_info, dept1, num1,dept2, num2):
-    time1 = course_info[course_info['dept/pgm']==dept1][course_info['number']==str(num1)]
-    time2 = course_info[course_info['dept/pgm']==dept2][course_info['number']==str(num2)]
+    time1 = course_info[course_info['dept/pgm']==dept1][course_info['number']==str(num1)].reset_index()
+    time2 = course_info[course_info['dept/pgm']==dept2][course_info['number']==str(num2)].reset_index()
     print(str(time1) + " " + str(time2))
     if(time1["date"].equals(time2["date"]) or
             (time1["date"].equals("MoWeFr") and time2["date"].equals("MoWe")) or
             (time2["date"].equals("MoWeFr") and time1["date"].equals("MoWe"))):
-        print("conflict")
+        start = [pd.to_datetime(time1["start time"]),pd.to_datetime(time2["start time"])]
+        end = [pd.to_datetime(time1["end time"]),pd.to_datetime(time2["end time"])]
+        print(np.max(start))
+        if( np.max(start) <= np.min(end)):
+            print("conflict")
 
 
 def make_recommendation(course_df, k, x):
@@ -44,7 +49,7 @@ if __name__ == '__main__':
     #course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
     #course_subset = course_info[course_info['area'].isin(distributions)]
     #class_names = course_subset['ClassName']
-    compare_time(course_info, "COMP_SCI", 110, "COMP_SCI", 150)
+    compare_time(course_info, "COMP_SCI", 101, "COMP_SCI", 110)
     """
     course_df = pd.read_csv('ratings_new.csv')
     # Fill in the empty value with 0
