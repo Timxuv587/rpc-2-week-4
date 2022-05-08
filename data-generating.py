@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
 
 
-"""
+
     course_df = pd.read_csv('ratings.csv')
     rate = np.array((np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,1,2,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6))
     new_row = np.random.choice(rate, (10,len(course_df.columns)-1))
@@ -66,4 +66,3 @@ if __name__ == '__main__':
         course_df[c] = np.random.choice(rate, size=len(course_df))
     print(course_df)
     course_df.to_csv('ratings_new.csv',index=False)
-"""
