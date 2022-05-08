@@ -28,7 +28,8 @@ def compare_time(course_info, dept1, num1,dept2, num2):
         end = [pd.to_datetime(time1["end time"]),pd.to_datetime(time2["end time"])]
         print(np.max(start))
         if( np.max(start) <= np.min(end)):
-            print("conflict")
+            return 0
+        return 1
 
 
 def make_recommendation(course_df, k, x):
@@ -44,22 +45,42 @@ def make_recommendation(course_df, k, x):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    #distributions = ['II', 'III']
+    recommendations = []
+    distributions = ['II', 'III']
     course_info = pd.read_csv('Northwestern_course_information_new.csv')
-    #course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
-    #course_subset = course_info[course_info['area'].isin(distributions)]
-    #class_names = course_subset['ClassName']
-    compare_time(course_info, "COMP_SCI", 101, "COMP_SCI", 110)
-    """
+    course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
+
+    i = 0
+    class_names = course_subset['ClassName']
+    # x = pd.Series(input)
+    # results = make_recommendation(course_info, k, x)
+    # prediction = course_info.iloc[results[0], 1:].sum() / k
+    # print(compare_time(course_info, "COMP_SCI", 101, "COMP_SCI", 110))
+
     course_df = pd.read_csv('ratings_new.csv')
     # Fill in the empty value with 0
     course_df = course_df.fillna(0)
     x = pd.Series(input)
     results = make_recommendation(course_df, k, x)
-    print(course_df.iloc[results[0], 1:])
-    prediction = course_df.iloc[results[0], 1:].sum() / k
-    print(class_names)
-    print(prediction.filter(items=class_names))
-    print(prediction.index)
-    """
+    main_prediction = course_df.iloc[results[0], 1:].sum() / k
+    # print(prediction.filter(items=class_names))
+    # prediction.
+
+    len_courses = 5
+
+    print(prediction.index[5])
+    for j in range(len_courses):
+        if distros[j] == 0:
+            predictions = main_prediction
+        else:
+            course_subset = course_info[course_info['area'] == distros[j]]
+            predictions = make_recommendation(course_subset, k, x)
+            main_prediction = course_subset.iloc[results[0], 1:].sum() / k
+        while(compare_time(course_info, predictions.index[i]) == 0):
+            i += 1
+        recommendations.append(predictions.index[i])
+    print(recommendations)
+
+    # print(prediction)
+
 
