@@ -15,6 +15,17 @@ input =  {"COMP_SCI349": 5,
 
 k = 5
 
+#class 1 class are name of class
+def compare_time(course_info, dept1, num1,dept2, num2):
+    time1 = course_info[course_info['dept/pgm']==dept1][course_info['number']==str(num1)]
+    time2 = course_info[course_info['dept/pgm']==dept2][course_info['number']==str(num2)]
+    print(str(time1) + " " + str(time2))
+    if(time1["date"].equals(time2["date"]) or
+            (time1["date"].equals("MoWeFr") and time2["date"].equals("MoWe")) or
+            (time2["date"].equals("MoWeFr") and time1["date"].equals("MoWe"))):
+        print("conflict")
+
+
 def make_recommendation(course_df, k, x):
     model = NearestNeighbors(n_neighbors=k,metric='euclidean')
 
@@ -28,11 +39,13 @@ def make_recommendation(course_df, k, x):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    distributions = ['II', 'III']
-    course_info = pd.read_csv('Northwestern_course_information.csv')
-    course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
-    course_subset = course_info[course_info['area'].isin(distributions)]
-    class_names = course_subset['ClassName']
+    #distributions = ['II', 'III']
+    course_info = pd.read_csv('Northwestern_course_information_new.csv')
+    #course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
+    #course_subset = course_info[course_info['area'].isin(distributions)]
+    #class_names = course_subset['ClassName']
+    compare_time(course_info, "COMP_SCI", 110, "COMP_SCI", 150)
+    """
     course_df = pd.read_csv('ratings_new.csv')
     # Fill in the empty value with 0
     course_df = course_df.fillna(0)
@@ -43,4 +56,5 @@ if __name__ == '__main__':
     print(class_names)
     print(prediction.filter(items=class_names))
     print(prediction.index)
+    """
 
