@@ -7,9 +7,12 @@ from sklearn.neighbors import NearestNeighbors
 
 #Set up the student that need class recommendation
 #Our goal is to predict his preference for other courses that he never took
-input = {"COMP_SCI349": 5,
+input =  {"COMP_SCI349": 5,
          "ECON201":4,
-         "ECON310":3}
+         "ECON310":3,
+         "EARTH101":6
+         }
+
 k = 5
 
 def make_recommendation(course_df, k, x):
@@ -30,7 +33,7 @@ if __name__ == '__main__':
     course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
     course_subset = course_info[course_info['area'].isin(distributions)]
     class_names = course_subset['ClassName']
-    course_df = pd.read_csv('ratings.csv')
+    course_df = pd.read_csv('ratings_new.csv')
     # Fill in the empty value with 0
     course_df = course_df.fillna(0)
     x = pd.Series(input)
