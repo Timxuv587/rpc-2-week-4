@@ -14,16 +14,44 @@ from sklearn.neighbors import NearestNeighbors
 if __name__ == '__main__':
     course_info = pd.read_csv('Northwestern_course_information.csv')
     size = np.array((20,50,100,200))
-    date = np.array(("MoWeFr","TuTh","MoWe"))
-    start_time = np.array(("8:00 PM","9:00 PM","10:00 PM"))
-    end_time = np.array(("9:00 PM","10:00 PM", "11:00 PM"))
+    time_interval = np.array((("MoWeFr","8:00", "8:50"),
+                              ("MoWeFr","9:00","9:50"),
+                              ("MoWeFr","10:00","10:50"),
+                              ("MoWeFr","11:00","11:50"),
+                              ("MoWeFr","12:00","12:50"),
+                              ("MoWeFr","13:00","13:50"),
+                              ("MoWeFr","14:00","14:50"),
+                              ("MoWeFr","15:00","15:50"),
+                              ("MoWeFr","16:00","16:50"),
+                              ("TuTh", "8:00", "9:20"),
+                              ("TuTh", "9:00", "10:20"),
+                              ("TuTh", "10:00", "11:20"),
+                              ("TuTh", "11:00", "12:20"),
+                              ("TuTh", "12:00", "13:20"),
+                              ("TuTh", "13:00", "14:20"),
+                              ("TuTh", "14:00", "15:20"),
+                              ("TuTh", "15:00", "14:20"),
+                              ("TuTh", "16:00", "17:20"),
+                              ("MoWe", "8:00", "9:20"),
+                              ("MoWe", "9:00", "10:20"),
+                              ("MoWe", "10:00", "11:20"),
+                              ("MoWe", "11:00", "12:20"),
+                              ("MoWe", "12:00", "13:20"),
+                              ("MoWe", "13:00", "14:20"),
+                              ("MoWe", "14:00", "15:20"),
+                              ("MoWe", "15:00", "14:20"),
+                              ("MoWe", "16:00", "17:20")
+                              ))
+
     course_info["class size"] = np.random.choice(size, size=len(course_info))
-    course_info["date"] = np.random.choice(date, size=len(course_info))
-    course_info["start time"] = np.random.choice(start_time, size=len(course_info))
-    course_info["end time"] = np.random.choice(end_time, size=len(course_info))
+    time_matrix = time_interval[np.random.choice(np.arange(0,len(time_interval)), size=len(course_info))].T
+    course_info["date"],course_info["start time"],course_info["end time"] = time_matrix
     print(course_info.head())
     course_info.to_csv('Northwestern_course_information_new.csv')
 
+
+
+"""
     course_df = pd.read_csv('ratings.csv')
     rate = np.array((np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,1,2,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6))
     new_row = np.random.choice(rate, (10,len(course_df.columns)-1))
@@ -38,3 +66,4 @@ if __name__ == '__main__':
         course_df[c] = np.random.choice(rate, size=len(course_df))
     print(course_df)
     course_df.to_csv('ratings_new.csv',index=False)
+"""
