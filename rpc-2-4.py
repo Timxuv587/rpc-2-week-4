@@ -8,7 +8,7 @@ from sklearn.neighbors import NearestNeighbors
 
 #Set up the student that need class recommendation
 #Our goal is to predict his preference for other courses that he never took
-input =  {"COMP_SCI349": 5,
+input =  {"COMP_SCI110": 5,
          "ECON201":4,
          "ECON310":3,
          "EARTH101":6
@@ -17,26 +17,33 @@ input =  {"COMP_SCI349": 5,
 k = 5
 
 #class 1 class are name of class
+
+def compare_schedule(course_info, recommendation, target):
+    for sample in recommendation:
+        if(compare_time(course_info,sample[:-3],sample[-3:],target[:-3],target[-3:])):
+            return 0
+    return 1
+
 def compare_time(course_info, dept1, num1,dept2, num2):
     time1 = course_info[course_info['dept/pgm']==dept1][course_info['number']==str(num1)].reset_index()
     time2 = course_info[course_info['dept/pgm']==dept2][course_info['number']==str(num2)].reset_index()
-    print(str(time1) + " " + str(time2))
+    #print(str(time1) + " " + str(time2))
     if(time1["date"].equals(time2["date"]) or
             (time1["date"].equals("MoWeFr") and time2["date"].equals("MoWe")) or
             (time2["date"].equals("MoWeFr") and time1["date"].equals("MoWe"))):
         start = [pd.to_datetime(time1["start time"]),pd.to_datetime(time2["start time"])]
         end = [pd.to_datetime(time1["end time"]),pd.to_datetime(time2["end time"])]
-        print(np.max(start))
+        #print(np.max(start))
         if( np.max(start) <= np.min(end)):
             return 0
         return 1
 
 
-def make_recommendation(course_df, k, x):
+def make_recommendation(rate_df, k, x):
     model = NearestNeighbors(n_neighbors=k,metric='euclidean')
 
     #filter the data, leave only the class that the student has rated
-    filtered_df = course_df.loc[:,x.index]
+    filtered_df = rate_df.loc[:,x.index]
 
     model.fit(filtered_df)
     distance,result = model.kneighbors([x.array])
@@ -50,37 +57,39 @@ if __name__ == '__main__':
     course_info = pd.read_csv('Northwestern_course_information_new.csv')
     course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
 
-    i = 0
-    class_names = course_subset['ClassName']
+
+    #class_names = course_subset['ClassName']
     # x = pd.Series(input)
     # results = make_recommendation(course_info, k, x)
     # prediction = course_info.iloc[results[0], 1:].sum() / k
     # print(compare_time(course_info, "COMP_SCI", 101, "COMP_SCI", 110))
 
-    course_df = pd.read_csv('ratings_new.csv')
+    rate_df = pd.read_csv('ratings_new.csv')
     # Fill in the empty value with 0
-    course_df = course_df.fillna(0)
+    rate_df = rate_df.fillna(0)
     x = pd.Series(input)
-    results = make_recommendation(course_df, k, x)
-    main_prediction = course_df.iloc[results[0], 1:].sum() / k
-    # print(prediction.filter(items=class_names))
+    results = make_recommendation(rate_df, k, x)
+    main_prediction = rate_df.iloc[results[0], 1:].sum() / k
+    main_recommendation = main_prediction[~main_prediction.index.isin(x.index)].sort_values(ascending=False)
     # prediction.
 
-    len_courses = 5
-
-    print(prediction.index[5])
+    i = 0
+    len_courses = 4
+    distros = [0,0,"II", "III"]
+    #print(prediction.index[5])
     for j in range(len_courses):
         if distros[j] == 0:
-            predictions = main_prediction
+            predictions = main_recommendation
         else:
             course_subset = course_info[course_info['area'] == distros[j]]
-            predictions = make_recommendation(course_subset, k, x)
-            main_prediction = course_subset.iloc[results[0], 1:].sum() / k
-        while(compare_time(course_info, predictions.index[i]) == 0):
+            class_names = course_subset['ClassName']
+            predictions = main_recommendation.filter(items=class_names)
+        while(compare_schedule(course_info, recommendations, predictions.index[i]) == 0 or predictions.index[i] in recommendations):
             i += 1
         recommendations.append(predictions.index[i])
+        i = 0
+        print(recommendations)
     print(recommendations)
 
     # print(prediction)
-
 

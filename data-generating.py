@@ -61,7 +61,7 @@ if __name__ == '__main__':
     added_df = pd.DataFrame(added,columns=course_df.columns)
     print(added_df)
     course_df = course_df.append(added_df)
-    class_list = ["COMP_SCI349","COMP_SCI110","COMP_SCI348","COMP_SCI336","ECON301","ECON201","ECON339","ECON310","COMP_SCI150","ASTRON103","EARTH101","ANTHRO213","COG SCI110"]
+    class_list = ["COMP_SCI349","COMP_SCI110","COMP_SCI348","COMP_SCI336","ECON301","ECON201","ECON339","ECON310","COMP_SCI150","ASTRON103","EARTH101","ANTHRO213","COG SCI110", "SOCIOL232", "SOCIOL277", "PSYCH336"]
     for c in class_list:
         course_df[c] = np.random.choice(rate, size=len(course_df))
     print(course_df)
