@@ -1,4 +1,5 @@
 # This is a sample Python script.
+from flask import Flask, render_template, url_for, request
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
@@ -60,8 +61,16 @@ def make_recommendation(rate_df, k, x):
     return result
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
+
+#finally, define the flask app and function run for the webpage
+app = Flask(__name__)
+
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template("test.html")
+@app.route('/system',methods=['POST', 'GET'])
+def predict():
     recommendations = []
     distributions = ['II', 'III']
     course_info = pd.read_csv('Northwestern_course_information_new.csv')
@@ -100,11 +109,16 @@ if __name__ == '__main__':
             course_subset = course_info[course_info['area'] == distros[j]]
             class_names = course_subset['ClassName']
             predictions = main_recommendation.filter(items=class_names)
-        while(compare_schedule(course_info, recommendations, predictions.index[i]) == 0 or predictions.index[i] in recommendations):
+        while(i < len(predictions) and  (compare_schedule(course_info, recommendations, predictions.index[i]) == 0 or predictions.index[i] in recommendations)):
             i += 1
-        recommendations.append(predictions.index[i])
+        if(i < len(predictions)):
+            recommendations.append(predictions.index[i])
         print(recommendations)
     print(recommendations)
+    return render_template('test.html', name = str(recommendations))
 
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    app.run(debug=True)
     # print(prediction)
 
