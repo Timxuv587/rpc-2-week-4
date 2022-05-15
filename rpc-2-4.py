@@ -16,6 +16,7 @@ input =  {"COMP_SCI110": 5,
 
 k = 5
 
+
 #class 1 class are name of class
 
 def compare_schedule(course_info, recommendation, target):
@@ -37,6 +38,15 @@ def compare_time(course_info, dept1, num1,dept2, num2):
         if( np.max(start) <= np.min(end)):
             return 0
         return 1
+#
+
+def compare_schedule(course_info, recommendation, target):
+    for sample in recommendation:
+
+        if(compare_time(course_info, sample[:-3], sample[-3:], target[:-3], target[-3:]) == 0):
+            return 0
+    return 1
+
 
 
 def make_recommendation(rate_df, k, x):
@@ -55,7 +65,10 @@ if __name__ == '__main__':
     recommendations = []
     distributions = ['II', 'III']
     course_info = pd.read_csv('Northwestern_course_information_new.csv')
+
+    # print(course_info)
     course_info['ClassName'] = course_info['dept/pgm'].astype(str) + course_info['number'].astype(str)
+
 
 
     #class_names = course_subset['ClassName']
@@ -82,6 +95,8 @@ if __name__ == '__main__':
         if distros[j] == 0:
             predictions = main_recommendation
         else:
+            # filtering case
+            # filter the courses by the distribution  I want
             course_subset = course_info[course_info['area'] == distros[j]]
             class_names = course_subset['ClassName']
             predictions = main_recommendation.filter(items=class_names)
